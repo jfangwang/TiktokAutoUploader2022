@@ -149,8 +149,12 @@ class Upload:
             print("Major error, cannot find the file upload button, please update getVideoUploadInput() in Bot.py")
             file_input_element = None
             exit()
-        abs_path = os.path.join(os.getcwd(), filename)
+        abs_path = os.path.join(os.getcwd() + "/" + filename)
+        # abs_path = os.path.join("/Users/jonnywang/Coding/personal/TiktokAutoUploader/" + filename)
+        # abs_path = "/Users/jonnywang/Coding/personal/TiktokAutoUploader/" + filename
+        print("ABSOLUTE PATH: " + abs_path)
         try:
+            # file_input_element.click()
             file_input_element.send_keys(abs_path)
         except StaleElementReferenceException as e:
             try:
@@ -163,7 +167,8 @@ class Upload:
 
 
         # We need to wait until it is uploaded and then clear input.
-
+        # print('Waiting 10 seconds for video upload')
+        # time.sleep(10)
         self.addCaptions()
         utils.randomTimeQuery()
         if private:

@@ -15,7 +15,13 @@ if __name__ == "__main__":
 
 
     # You can also choose to upload a file directly with no editing or cropping of the video.
-    tiktok_bot.upload.directUpload("test.mp4", private=True, test=True)
+    # tiktok_bot.upload.directUpload("test.mp4", private=True, test=True)
+
+    # Or use youtube url as video source. [Simpsons Meme 1:16 - 1:32 Example]
+
+    tiktok_bot.upload.directUpload("test.mp4", private=False, test=False)
+
+    # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=OGEouryaQ3g", "TextOverlay", startTime=76, endTime=92, private=False)
 
 
     ####################################################################################################################
