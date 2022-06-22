@@ -131,3 +131,5 @@ dmypy.json
 # Personal Development Files
 CookiesDir/
 VideosDirPath/
+pendingUpload/*
+!pendingUpload/

@@ -1,4 +1,5 @@
 from TiktokBot import TiktokBot
+import os
 if __name__ == "__main__":
     # Example Usage
     # pip install git+https://github.com/pytube/pytube
@@ -19,7 +20,17 @@ if __name__ == "__main__":
 
     # Or use youtube url as video source. [Simpsons Meme 1:16 - 1:32 Example]
 
-    tiktok_bot.upload.directUpload("test.mp4", private=False, test=False)
+    # tiktok_bot.upload.directUpload("test.mp4", private=False, test=False)
+    if "pendingUpload" not in os.listdir():
+        os.mkdir("pendingUpload")
+    if len(os.listdir("pendingUpload")) == 0:
+        print("No videos created")
+        exit()
+    latest_video = os.listdir("pendingUpload")[0]
+    latest_video_path = "pendingUpload/" + latest_video
+    tiktok_bot.upload.directUpload(latest_video_path, private=False, test=False)
+    os.remove(latest_video_path)
+
 
     # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=OGEouryaQ3g", "TextOverlay", startTime=76, endTime=92, private=False)
 

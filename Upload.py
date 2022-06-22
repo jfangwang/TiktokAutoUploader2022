@@ -7,6 +7,10 @@ from Cookies import Cookies
 from IO import IO
 from Video import Video
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import selenium.common
 
 PROTECTED_FILES = ["processed.mp4", "VideosSaveHere.txt"]
 
@@ -156,6 +160,8 @@ class Upload:
         try:
             # file_input_element.click()
             file_input_element.send_keys(abs_path)
+            WebDriverWait(self.bot, 20).until(EC.invisibility_of_element((By.CLASS_NAME, "tiktok-progress-bar")))
+            print("Created video draft")
         except StaleElementReferenceException as e:
             try:
                 self.bot.implicitly_wait(5)
@@ -169,7 +175,7 @@ class Upload:
         # We need to wait until it is uploaded and then clear input.
         # print('Waiting 10 seconds for video upload')
         # time.sleep(10)
-        self.addCaptions()
+        # self.addCaptions()
         utils.randomTimeQuery()
         if private:
             self.webbot.selectPrivateRadio()  # private video selection
@@ -181,6 +187,7 @@ class Upload:
             """
             pass
         if not test:
-
             self.webbot.uploadButtonClick()  # upload button
-        input("Press any button to exit")
+            print("video uploaded!")
+        # input("Press any button to exit")
+        exit()

@@ -12,7 +12,7 @@ class Cookies:
 
 
     def selectCookie(self):
-        if len(os.listdir(self.cookies_dir)) > 0:
+        if len(os.listdir(self.cookies_dir)) > 1:
             print("Select Cookie number that you want to use:: ")
             cookies_dict = dict(enumerate(os.listdir(self.cookies_dir)))
             for index, filename in enumerate(os.listdir(self.cookies_dir)):
@@ -31,6 +31,9 @@ class Cookies:
 
             selected_cookie = cookies_dict[selected]
             self.loadCookies(selected_cookie)
+        elif len(os.listdir(self.cookies_dir)) == 1:
+            cookies_dict = dict(enumerate(os.listdir(self.cookies_dir)))
+            self.loadCookies(cookies_dict[0])
         else:
             print("No cookies stored on save directory!")
             self.createCookie()

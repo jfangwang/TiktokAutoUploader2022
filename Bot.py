@@ -2,6 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import selenium.common
+import time
+
 class Bot:
     """Bot used as high level interaction with web-browser via Javascript exec"""
     def __init__(self, bot):
@@ -78,6 +80,8 @@ class Bot:
             WebDriverWait(self.bot, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "btn-post")))
             operation_elems = self.bot.find_elements(By.CLASS_NAME, "btn-post")[0]
             operation_elems.click()
+            WebDriverWait(self.bot, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "btn-post")))
+
         except Exception as e:
             print("Could not upload, please upload manually.")
 
