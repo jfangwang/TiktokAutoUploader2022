@@ -1,0 +1,53 @@
+from TiktokBot import TiktokBot
+import os
+if __name__ == "__main__":
+    # Example Usage
+    # pip install git+https://github.com/pytube/pytube
+    
+    tiktok_bot = TiktokBot()  # "VideosDirPath", is the default directory where images edited will be saved.
+        
+    # Use a video from your directory.
+    # tiktok_bot.upload.uploadVideo("test1.mp4", "This is test", 1, 2, private=True)
+
+    # Or use youtube url as video source. [Simpsons Meme 1:16 - 1:32 Example]
+
+    # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=4eegr0W_C5c", "", private=True, test=False)
+    # tiktok_bot.upload.uploadVideo("test.mp4", "Hi", private=False, test=False)
+
+
+    # You can also choose to upload a file directly with no editing or cropping of the video.
+    # tiktok_bot.upload.directUpload("test.mp4", private=True, test=True)
+
+    # Or use youtube url as video source. [Simpsons Meme 1:16 - 1:32 Example]
+
+    # tiktok_bot.upload.directUpload("test.mp4", private=False, test=False)
+    if "pendingUpload" not in os.listdir():
+        os.mkdir("pendingUpload")
+    if len(os.listdir("pendingUpload")) == 0:
+        print("No videos created")
+        exit()
+    latest_video = os.listdir("pendingUpload")[0]
+    latest_video_path = "pendingUpload/" + latest_video
+    tiktok_bot.upload.directUpload(latest_video_path, private=False, test=True)
+
+    # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=OGEouryaQ3g", "TextOverlay", startTime=76, endTime=92, private=False)
+
+
+    ####################################################################################################################
+    # Scheduling does not work currently.
+
+    # tiktok_bot.schedule.printSchedule()
+    # playlist = https://www.youtube.com/playlist?list=PLiMQfyKvRdimHicuw1cAmwS7d_UiANXcj
+    '''
+        while True:
+            url = input("Enter a url for uploading:: ")
+            caption = input("Enter a caption for the video:: ")
+            timeStart = input("Enter Start Time:: ")
+            timeEnd = input("Enter End Time:: ")
+            # Add this video into the csv so that you can upload yourself, by putting test parameter on and just showing you.
+            tiktok_bot.schedule.scheduleVideo(url, caption, timeStart, timeEnd)
+    '''
+    # We can add task schedule from read from a csv: url, caption, startTime, endTime, time_to_release.
+    # tiktok_bot.schedule.submit_all_schedule()
+    # tiktok_bot.schedule.scheduleVideo("https://www.youtube.com/watch?v=yxErIigWRv4", "why do these never have my name!!", 115, 125)
+    # Default params: Videos are separated by a day each "", time is constant: "20:10" ;

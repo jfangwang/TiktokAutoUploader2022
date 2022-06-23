@@ -1,26 +1,64 @@
+import time
+from subprocess import Popen
+from dotenv import load_dotenv
+from os import getenv, name
+import os, shutil
 from TiktokBot import TiktokBot
-import os
-if __name__ == "__main__":
-    # Example Usage
-    # pip install git+https://github.com/pytube/pytube
-    
-    tiktok_bot = TiktokBot()  # "VideosDirPath", is the default directory where images edited will be saved.
-        
-    # Use a video from your directory.
-    # tiktok_bot.upload.uploadVideo("test1.mp4", "This is test", 1, 2, private=True)
+from reddit.subreddit import get_subreddit_threads
+from utils.cleanup import cleanup
+from utils.console import print_markdown, print_step
+# from utils.checker import envUpdate
+from video_creation.background import download_background, chop_background_video
+from video_creation.final_video import make_final_video
+from video_creation.screenshot_downloader import download_screenshots_of_reddit_posts
+from video_creation.voices import save_text_to_mp3
+VERSION = 2.1
+print(
+    """
+██████╗ ███████╗██████╗ ██████╗ ██╗████████╗    ██╗   ██╗██╗██████╗ ███████╗ ██████╗     ███╗   ███╗ █████╗ ██╗  ██╗███████╗██████╗
+██╔══██╗██╔════╝██╔══██╗██╔══██╗██║╚══██╔══╝    ██║   ██║██║██╔══██╗██╔════╝██╔═══██╗    ████╗ ████║██╔══██╗██║ ██╔╝██╔════╝██╔══██╗
+██████╔╝█████╗  ██║  ██║██║  ██║██║   ██║       ██║   ██║██║██║  ██║█████╗  ██║   ██║    ██╔████╔██║███████║█████╔╝ █████╗  ██████╔╝
+██╔══██╗██╔══╝  ██║  ██║██║  ██║██║   ██║       ╚██╗ ██╔╝██║██║  ██║██╔══╝  ██║   ██║    ██║╚██╔╝██║██╔══██║██╔═██╗ ██╔══╝  ██╔══██╗
+██║  ██║███████╗██████╔╝██████╔╝██║   ██║        ╚████╔╝ ██║██████╔╝███████╗╚██████╔╝    ██║ ╚═╝ ██║██║  ██║██║  ██╗███████╗██║  ██║
+╚═╝  ╚═╝╚══════╝╚═════╝ ╚═════╝ ╚═╝   ╚═╝         ╚═══╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝     ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+"""
+)
+load_dotenv()
+# Modified by JasonLovesDoggo
+print_markdown(
+    "### Thanks for using this tool! [Feel free to contribute to this project on GitHub!](https://lewismenelaws.com) If you have any questions, feel free to reach out to me on Twitter or submit a GitHub issue. You can find solutions to many common problems in the [Documentation](https://luka-hietala.gitbook.io/documentation-for-the-reddit-bot/)"
+)
 
-    # Or use youtube url as video source. [Simpsons Meme 1:16 - 1:32 Example]
+time.sleep(1)
 
-    # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=4eegr0W_C5c", "", private=True, test=False)
-    # tiktok_bot.upload.uploadVideo("test.mp4", "Hi", private=False, test=False)
+client_id = getenv("REDDIT_CLIENT_ID")
+client_secret = getenv("REDDIT_CLIENT_SECRET")
+username = getenv("REDDIT_USERNAME")
+password = getenv("REDDIT_PASSWORD")
+reddit2fa = getenv("REDDIT_2FA")
 
 
-    # You can also choose to upload a file directly with no editing or cropping of the video.
-    # tiktok_bot.upload.directUpload("test.mp4", private=True, test=True)
+def main():
+    #envUpdate()
+    cleanup()
 
-    # Or use youtube url as video source. [Simpsons Meme 1:16 - 1:32 Example]
+    def get_obj():
+        reddit_obj = get_subreddit_threads()
+        return reddit_obj
 
-    # tiktok_bot.upload.directUpload("test.mp4", private=False, test=False)
+    reddit_object = get_obj()
+    length, number_of_comments = save_text_to_mp3(reddit_object)
+    download_screenshots_of_reddit_posts(reddit_object, number_of_comments)
+    download_background()
+    chop_background_video(length)
+    make_final_video(number_of_comments, length)
+    moving_file = os.listdir("./results")[0]
+    if "results" in os.listdir() and len(os.listdir("./results")) > 0:
+        shutil.move("./results/" + moving_file, "./pendingUpload/" + moving_file)
+    run_tiktok_upload()
+
+def run_tiktok_upload():
+    tiktok_bot = TiktokBot()
     if "pendingUpload" not in os.listdir():
         os.mkdir("pendingUpload")
     if len(os.listdir("pendingUpload")) == 0:
@@ -28,26 +66,25 @@ if __name__ == "__main__":
         exit()
     latest_video = os.listdir("pendingUpload")[0]
     latest_video_path = "pendingUpload/" + latest_video
-    tiktok_bot.upload.directUpload(latest_video_path, private=False, test=True)
+    tiktok_bot.upload.directUpload(latest_video_path, private=False, test=False)
 
-    # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=OGEouryaQ3g", "TextOverlay", startTime=76, endTime=92, private=False)
+def run_many(times):
+    for x in range(times):
+        x = x + 1
+        print_step(
+            f'on the {x}{("st" if x == 1 else ("nd" if x == 2 else ("rd" if x == 3 else "th")))} iteration of {times}'
+        )  # correct 1st 2nd 3rd 4th 5th....
+        main()
+        Popen("cls" if name == "nt" else "clear", shell=True).wait()
 
 
-    ####################################################################################################################
-    # Scheduling does not work currently.
-
-    # tiktok_bot.schedule.printSchedule()
-    # playlist = https://www.youtube.com/playlist?list=PLiMQfyKvRdimHicuw1cAmwS7d_UiANXcj
-    '''
-        while True:
-            url = input("Enter a url for uploading:: ")
-            caption = input("Enter a caption for the video:: ")
-            timeStart = input("Enter Start Time:: ")
-            timeEnd = input("Enter End Time:: ")
-            # Add this video into the csv so that you can upload yourself, by putting test parameter on and just showing you.
-            tiktok_bot.schedule.scheduleVideo(url, caption, timeStart, timeEnd)
-    '''
-    # We can add task schedule from read from a csv: url, caption, startTime, endTime, time_to_release.
-    # tiktok_bot.schedule.submit_all_schedule()
-    # tiktok_bot.schedule.scheduleVideo("https://www.youtube.com/watch?v=yxErIigWRv4", "why do these never have my name!!", 115, 125)
-    # Default params: Videos are separated by a day each "", time is constant: "20:10" ;
+if __name__ == "__main__":
+    try:
+        if getenv("TIMES_TO_RUN") and isinstance(int(getenv("TIMES_TO_RUN")), int):
+            run_many(int(getenv("TIMES_TO_RUN")))
+        else:
+            main()
+    except KeyboardInterrupt:
+        print_markdown("## Clearing temp files")
+        cleanup()
+        exit()

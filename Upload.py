@@ -1,7 +1,7 @@
 # This class will be in charge of uploading videos onto tiktok.
 import os, time
 from Bot import Bot
-import utils
+import utils2 as utils
 from Browser import Browser
 from Cookies import Cookies
 from IO import IO
@@ -175,7 +175,7 @@ class Upload:
         # We need to wait until it is uploaded and then clear input.
         # print('Waiting 10 seconds for video upload')
         # time.sleep(10)
-        # self.addCaptions()
+        self.addCaptions()
         utils.randomTimeQuery()
         if private:
             self.webbot.selectPrivateRadio()  # private video selection

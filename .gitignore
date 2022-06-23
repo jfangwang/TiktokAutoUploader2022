@@ -133,3 +133,5 @@ CookiesDir/
 VideosDirPath/
 pendingUpload/*
 !pendingUpload/
+results/
+assets/
