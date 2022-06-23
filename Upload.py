@@ -188,6 +188,6 @@ class Upload:
             pass
         if not test:
             self.webbot.uploadButtonClick()  # upload button
-            print("video uploaded!")
+            os.remove(abs_path)
         # input("Press any button to exit")
-        exit()
+

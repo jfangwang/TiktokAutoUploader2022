@@ -28,9 +28,7 @@ if __name__ == "__main__":
         exit()
     latest_video = os.listdir("pendingUpload")[0]
     latest_video_path = "pendingUpload/" + latest_video
-    tiktok_bot.upload.directUpload(latest_video_path, private=False, test=False)
-    os.remove(latest_video_path)
-
+    tiktok_bot.upload.directUpload(latest_video_path, private=False, test=True)
 
     # tiktok_bot.upload.uploadVideo("https://www.youtube.com/watch?v=OGEouryaQ3g", "TextOverlay", startTime=76, endTime=92, private=False)
 

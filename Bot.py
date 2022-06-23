@@ -80,7 +80,10 @@ class Bot:
             WebDriverWait(self.bot, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "btn-post")))
             operation_elems = self.bot.find_elements(By.CLASS_NAME, "btn-post")[0]
             operation_elems.click()
-            WebDriverWait(self.bot, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "btn-post")))
+            WebDriverWait(self.bot, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "modal-btn")))
+            operation_elems = self.bot.find_elements(By.CLASS_NAME, "modal-btn")[0]
+            operation_elems.click()
+            print("Video Uploaded!")
 
         except Exception as e:
             print("Could not upload, please upload manually.")
