@@ -52,20 +52,12 @@ def main():
     download_background()
     chop_background_video(length)
     make_final_video(number_of_comments, length)
-    moving_file = os.listdir("./results")[0]
-    if "results" in os.listdir() and len(os.listdir("./results")) > 0:
-        shutil.move("./results/" + moving_file, "./pendingUpload/" + moving_file)
     run_tiktok_upload()
 
 def run_tiktok_upload():
     tiktok_bot = TiktokBot()
-    if "pendingUpload" not in os.listdir():
-        os.mkdir("pendingUpload")
-    if len(os.listdir("pendingUpload")) == 0:
-        print("No videos created")
-        exit()
-    latest_video = os.listdir("pendingUpload")[0]
-    latest_video_path = "pendingUpload/" + latest_video
+    latest_video = os.listdir("results")[0]
+    latest_video_path = "results/" + latest_video
     tiktok_bot.upload.directUpload(latest_video_path, private=False, test=False)
 
 def run_many(times):
