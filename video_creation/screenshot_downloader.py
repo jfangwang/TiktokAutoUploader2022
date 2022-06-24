@@ -29,7 +29,7 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num):
     with sync_playwright() as p:
         print_substep("Launching Headless Browser...")
 
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(headless=True)
         context = browser.new_context()
 
         if getenv("THEME").upper() == "DARK":
