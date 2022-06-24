@@ -17,6 +17,7 @@ class Bot:
         WebDriverWait(self.bot, 10).until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
         self.bot.switch_to.frame(0)
         self.bot.implicitly_wait(1)
+        WebDriverWait(self.bot, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "uploader")))
         upload_card = self.bot.find_elements(By.CLASS_NAME, "uploader")[0]
         file_input_element = upload_card.find_elements(By.TAG_NAME, "input")[0]
         # file_input_element = self.bot.find_elements(By.CLASS_NAME, "upload-btn-input")[0]
@@ -86,7 +87,9 @@ class Bot:
             print("Video Uploaded!")
 
         except Exception as e:
-            print("Could not upload, please upload manually.")
+            print("Could not upload, please upload manually. Here is the error: ")
+            print(e)
+            exit()
 
 
 
